@@ -22,21 +22,25 @@ public class FriendListListener implements ActionListener {
 	}
 	
 	public FriendListListener() {
+
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		sendRequest();
 		System.out.println("Size of the list model" + listModel.getSize());
-		
 	}
+
 	public List <String> getFriendList(String message) {
-		log.info(message);
 		List <String> result = new ArrayList<String>();
 		String[] messageParts = message.split(":");
+
+		log.info(message);
+
 		for (int i = 1; i < messageParts.length ; i++) {
 			result.add(messageParts[i]);
 		}
+
 		log.info(result.get(0));
 		return result;
 	}
@@ -52,6 +56,7 @@ public class FriendListListener implements ActionListener {
 
 	public static void setListModel(List<String> list) {
 		FriendListListener.listModel.clear();
+		
 		for (int i = 0; i < list.size() ; i++) {
 			listModel.addElement(list.get(i));
 		}

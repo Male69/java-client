@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-
-
 public class SocketClient {
 
 	private final static Logger log = Logger.getLogger(SocketClient.class.getName()); 
@@ -65,11 +63,9 @@ public class SocketClient {
 
 	public void setSocket(Socket socket) {
 		this.socket = socket;
-	}	
+	} 
 	
 	public static void main(String[] args) {
 		
 	}
-
-
 }

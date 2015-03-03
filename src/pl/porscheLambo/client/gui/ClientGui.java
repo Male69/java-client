@@ -36,7 +36,6 @@ public class ClientGui {
 	private JTextField textField;
 	private JScrollPane scrollPane;
 	private JList<String> list;
-	//DefaultListModel<String> listModel = new DefaultListModel<String>();
 
 	/**
 	 * Launch the application.
@@ -113,11 +112,11 @@ public class ClientGui {
 						public void mouseClicked(MouseEvent evt) {
 							JList<String> list = (JList<String>)evt.getSource();
 							if (evt.getClickCount() == 2) {
-					            int index = list.locationToIndex(evt.getPoint());
-					            System.out.println("index: " + index);
-					            ChatGUI chat = new ChatGUI(list.getSelectedValue(), socketClient.getSocket());
-					            ChatGUI.main(chat);
-							}							
+											int index = list.locationToIndex(evt.getPoint());
+											System.out.println("index: " + index);
+											ChatGUI chat = new ChatGUI(list.getSelectedValue(), socketClient.getSocket());
+											ChatGUI.main(chat);
+							}             
 						}
 					});
 					scrollPane.add(list);
@@ -126,17 +125,14 @@ public class ClientGui {
 					FriendList.setVisible(true);
 				}
 			});
+
 			btnSubmit.setBounds(166, 159, 89, 23);
 			Login.add(btnSubmit);
-			
-			
-			
-			
 		}catch(NullPointerException e) {
 			e.printStackTrace();
 		}
-		
 	}
+	
 	public void launchChatGui() {
 		
 	}

@@ -37,7 +37,6 @@ public class ChatGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//ChatGUI window = new ChatGUI(args, socket);
 					chat.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,16 +49,13 @@ public class ChatGUI {
 	 * Create the application.
 	 */
 	public ChatGUI(String username, Socket socket, String message) {
-		
 		this.username = username;
 		this.socket = socket;
 		this.message = message;
 		initialize();
-		
 	}
 	
 	public ChatGUI(String username, Socket socket) {
-		
 		this.username = username;
 		this.socket = socket;
 		initialize();
@@ -73,7 +69,7 @@ public class ChatGUI {
 		try {
 			frame = new JFrame();
 			frame.setBounds(100, 100, 450, 300);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 			frame.getContentPane().setLayout(null);
 			
 			JPanel panel = new JPanel();
@@ -93,8 +89,7 @@ public class ChatGUI {
 			}
 			list.setBounds(10, 11, 414, 116);
 			panel.add(list);
-			
-			
+
 			JTextArea textArea = new JTextArea();
 			textArea.setBounds(10, 139, 414, 85);
 			panel.add(textArea);
@@ -107,19 +102,16 @@ public class ChatGUI {
 					System.out.println("Message po wyslaniu" + msg);
 					listModel.addElement(textArea.getText());
 					list = new JList<String>(listModel);
-					//SocketClientHandler socketClientHandler = new SocketClientHandler();
+
 					SocketClientHandler.sendRequest(msg);
 					textArea.setText(null);
-					
 				}
 			});
 			btnSend.setBounds(358, 230, 66, 23);
 			panel.add(btnSend);
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void addTextToWindow(String message) {
@@ -127,5 +119,4 @@ public class ChatGUI {
 		listModel.addElement(message);
 		list = new JList<String>(listModel);
 	}
-
 }

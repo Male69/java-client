@@ -24,16 +24,9 @@ public class TestGui {
 			}
 		});
 		
-		 Timer timer = new Timer(1000, new TestGuiListener());
-
-		    timer.start();
-		    System.out.println("A ja jestem za startem");
-//		    try {
-//		      Thread.sleep(10000);
-//		    } catch (InterruptedException e) {
-//		    }
-		   // timer.stop();
-		  }
+		Timer timer = new Timer(1000, new TestGuiListener());
+		timer.start();
+	}
 
 	/**
 	 * Create the application.
@@ -47,8 +40,8 @@ public class TestGui {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
 }

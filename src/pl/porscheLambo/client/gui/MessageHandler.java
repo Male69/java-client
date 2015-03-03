@@ -25,21 +25,23 @@ public class MessageHandler {
 	private ChatGUI chat;
 	
 	public MessageHandler(String message) {
-		System.out.println("Wywoluje okienko!!");
-		getMessage(message);
 		boolean checkConv = checkIfConversationExists(username);
+
+		System.out.println("Wywoluje okienko!!");
 		System.out.println("Value of the checkIfConversationExists" + checkConv);
+
+		getMessage(message);
+
 		if(checkConv == false) {
 			System.out.println("Wchodze w warunek");
+
 			launchChatWindow();
 			addConversation();
 		}else {
 			log.info("before addTextToWindow" + message);
+
 			currentConversations.get(username).addTextToWindow(this.message);
-			//chat.addTextToWindow(message);
 		}
-		
-		
 	}
 	
 	public String getMessage() {
@@ -67,8 +69,10 @@ public class MessageHandler {
 	}
 
 	public String getMessage(String msg) {
-		System.out.println(msg);
 		String[] messageParts = msg.split(":");
+
+		System.out.println(msg);
+
 		setUsername(messageParts[0]);
 		setMessage(messageParts[1]);
 		
@@ -77,35 +81,31 @@ public class MessageHandler {
 	
 	public boolean checkIfConversationExists(String username) {
 		log.info(username);
-			
+		
 		try {
-			for (Entry<String, ChatGUI> elem : currentConversations.entrySet()) {
+			for(Entry<String, ChatGUI> elem : currentConversations.entrySet()) {
 				if(elem.getKey().equals(username)) {
 					System.out.println("Jestem tu");
 					return true;
 				}
 			}
-//			for (String elem : currentConversations) {
-//				if(elem.equals(username)) {
-//					System.out.println("Jestem tu");
-//					return true;
-//				}
-//			}
 		} catch (NullPointerException e) {
 			System.out.println("tablica jest pusta");
 		}
+
 		return false;
 	}
 	
 	public void launchChatWindow() {
-		 chat = new ChatGUI(username, SocketClientHandler.getSocket(), message);
-         ChatGUI.main(chat);
+		chat = new ChatGUI(username, SocketClientHandler.getSocket(), message);
+		
+		ChatGUI.main(chat);
 	}
 	
-	public void addConversation() {	
+	public void addConversation() { 
 		System.out.println("Size of the current conversations" + currentConversations.size());
+		
 		currentConversations.put(username, chat);
 	}
-	
 }
 

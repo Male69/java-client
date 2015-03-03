@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import pl.porscheLambo.client.gui.FriendListListener;
 import pl.porscheLambo.client.gui.MessageHandler;
 
-	public class SocketClientHandler implements Runnable {
+public class SocketClientHandler implements Runnable {
 	
 	private static Socket socket;
 	private BufferedReader serverMsg;
@@ -21,13 +21,9 @@ import pl.porscheLambo.client.gui.MessageHandler;
 	private String message;
 	private String username;
 	private static List<String> conversations;
-	
-	SocketClientHandler() {
-		
-	}
 
 	public SocketClientHandler(Socket socket) {
-		SocketClientHandler.socket = socket;	
+		SocketClientHandler.socket = socket;  
 	}
 	
 	public static Socket getSocket() {
@@ -37,8 +33,6 @@ import pl.porscheLambo.client.gui.MessageHandler;
 	public static void setSocket(Socket socket) {
 		SocketClientHandler.socket = socket;
 	}
-
-	
 	
 	public String getUsername() {
 		return username;
@@ -52,6 +46,7 @@ import pl.porscheLambo.client.gui.MessageHandler;
 	public void run() {
 		while(true) {
 			message = getResponse();
+
 			checkKindOfMsg(getFirstPartOfTheMsg(message));
 		}
 	}
@@ -59,8 +54,10 @@ import pl.porscheLambo.client.gui.MessageHandler;
 	public String getResponse() {
 		try {
 			serverMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
 			if(serverMsg != null) {
 				message = serverMsg.readLine();
+
 				log.info( message);
 			}
 		} catch (IOException e) {
@@ -70,23 +67,24 @@ import pl.porscheLambo.client.gui.MessageHandler;
 	}
 	
 	public String getFirstPartOfTheMsg(String msg) {
-		String[] msgSplitter = msg.split(":");		
+		String[] msgSplitter = msg.split(":");
+
 		return msgSplitter[0];
-		
 	}
+
 	public void checkKindOfMsg(String firstPartOfTheMsg) {
 		if(firstPartOfTheMsg.equals("connections")) {
-			 new FriendListListener(message);
-		}else {
+			new FriendListListener(message);
+		} else {
 			new MessageHandler(message);
 		}
 	}
 	
 	public static void sendRequest(String request ) {
-
 		if(request.length() != 0) {
 			try {
 				BufferedWriter writeMsg = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
 				writeMsg.write(request);
 				writeMsg.newLine();
 				writeMsg.flush();
