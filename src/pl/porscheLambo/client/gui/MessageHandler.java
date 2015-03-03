@@ -17,95 +17,95 @@ import pl.porscheLambo.client.SocketClientConnection;
 import pl.porscheLambo.client.SocketClientHandler;
 
 public class MessageHandler {
-	
-	private String message;
-	private String username;
-	private static HashMap<String, ChatGUI> currentConversations = new HashMap<String, ChatGUI>();
-	private final static Logger log = Logger.getLogger(MessageHandler.class.getName()); 
-	private ChatGUI chat;
-	
-	public MessageHandler(String message) {
-		System.out.println("Wywoluje okienko!!");
-		getMessage(message);
-		boolean checkConv = checkIfConversationExists(username);
-		System.out.println("Value of the checkIfConversationExists" + checkConv);
-		if(checkConv == false) {
-			System.out.println("Wchodze w warunek");
-			launchChatWindow();
-			addConversation();
-		}else {
-			log.info("before addTextToWindow" + message);
-			currentConversations.get(username).addTextToWindow(this.message);
-			//chat.addTextToWindow(message);
-		}
-		
-		
-	}
-	
-	public String getMessage() {
-		return message;
-	}
+  
+  private String message;
+  private String username;
+  private static HashMap<String, ChatGUI> currentConversations = new HashMap<String, ChatGUI>();
+  private final static Logger log = Logger.getLogger(MessageHandler.class.getName()); 
+  private ChatGUI chat;
+  
+  public MessageHandler(String message) {
+    boolean checkConv = checkIfConversationExists(username);
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    System.out.println("Wywoluje okienko!!");
+    System.out.println("Value of the checkIfConversationExists" + checkConv);
 
-	public String getUsername() {
-		return username;
-	}
+    getMessage(message);
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    if(checkConv == false) {
+      System.out.println("Wchodze w warunek");
 
-	public HashMap<String, ChatGUI> getCurrentConversations() {
-		return currentConversations;
-	}
+      launchChatWindow();
+      addConversation();
+    }else {
+      log.info("before addTextToWindow" + message);
 
-	public void setCurrentConversations(HashMap<String, ChatGUI> currentConversations) {
-		this.currentConversations = currentConversations;
-	}
+      currentConversations.get(username).addTextToWindow(this.message);
+    }
+  }
+  
+  public String getMessage() {
+    return message;
+  }
 
-	public String getMessage(String msg) {
-		System.out.println(msg);
-		String[] messageParts = msg.split(":");
-		setUsername(messageParts[0]);
-		setMessage(messageParts[1]);
-		
-		return message;
-	}
-	
-	public boolean checkIfConversationExists(String username) {
-		log.info(username);
-			
-		try {
-			for (Entry<String, ChatGUI> elem : currentConversations.entrySet()) {
-				if(elem.getKey().equals(username)) {
-					System.out.println("Jestem tu");
-					return true;
-				}
-			}
-//			for (String elem : currentConversations) {
-//				if(elem.equals(username)) {
-//					System.out.println("Jestem tu");
-//					return true;
-//				}
-//			}
-		} catch (NullPointerException e) {
-			System.out.println("tablica jest pusta");
-		}
-		return false;
-	}
-	
-	public void launchChatWindow() {
-		 chat = new ChatGUI(username, SocketClientHandler.getSocket(), message);
-         ChatGUI.main(chat);
-	}
-	
-	public void addConversation() {	
-		System.out.println("Size of the current conversations" + currentConversations.size());
-		currentConversations.put(username, chat);
-	}
-	
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public HashMap<String, ChatGUI> getCurrentConversations() {
+    return currentConversations;
+  }
+
+  public void setCurrentConversations(HashMap<String, ChatGUI> currentConversations) {
+    this.currentConversations = currentConversations;
+  }
+
+  public String getMessage(String msg) {
+    String[] messageParts = msg.split(":");
+
+    System.out.println(msg);
+
+    setUsername(messageParts[0]);
+    setMessage(messageParts[1]);
+    
+    return message;
+  }
+  
+  public boolean checkIfConversationExists(String username) {
+    log.info(username);
+    
+    try {
+      for(Entry<String, ChatGUI> elem : currentConversations.entrySet()) {
+        if(elem.getKey().equals(username)) {
+          System.out.println("Jestem tu");
+          return true;
+        }
+      }
+    } catch (NullPointerException e) {
+      System.out.println("tablica jest pusta");
+    }
+
+    return false;
+  }
+  
+  public void launchChatWindow() {
+    chat = new ChatGUI(username, SocketClientHandler.getSocket(), message);
+    
+    ChatGUI.main(chat);
+  }
+  
+  public void addConversation() { 
+    System.out.println("Size of the current conversations" + currentConversations.size());
+    
+    currentConversations.put(username, chat);
+  }
 }
 
