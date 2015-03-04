@@ -19,6 +19,7 @@ import pl.porscheLambo.client.SocketClientHandler;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.net.Socket;
+import javax.swing.JLabel;
 
 public class ChatGUI {
 
@@ -52,12 +53,6 @@ public class ChatGUI {
 		this.username = username;
 		this.socket = socket;
 		this.message = message;
-		initialize();
-	}
-	
-	public ChatGUI(String username, Socket socket) {
-		this.username = username;
-		this.socket = socket;
 		initialize();
 	}
 	

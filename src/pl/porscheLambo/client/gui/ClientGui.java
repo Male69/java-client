@@ -114,8 +114,7 @@ public class ClientGui {
 							if (evt.getClickCount() == 2) {
 											int index = list.locationToIndex(evt.getPoint());
 											System.out.println("index: " + index);
-											ChatGUI chat = new ChatGUI(list.getSelectedValue(), socketClient.getSocket());
-											ChatGUI.main(chat);
+											new MessageHandler(list.getSelectedValue());
 							}             
 						}
 					});

@@ -25,14 +25,17 @@ public class MessageHandler {
 	private ChatGUI chat;
 	
 	public MessageHandler(String message) {
-		boolean checkConv = checkIfConversationExists(username);
+		
 
-		System.out.println("Wywoluje okienko!!");
-		System.out.println("Value of the checkIfConversationExists" + checkConv);
+		
+		//System.out.println("Value of the checkIfConversationExists" + checkConv);
+		if(message != null) {
+			splitter(message);
+			System.out.println("message:" + message + "username: " + username);
+		}
+		
 
-		getMessage(message);
-
-		if(checkConv == false) {
+		if(checkIfConversationExists(username) == false || message.isEmpty()) {
 			System.out.println("Wchodze w warunek");
 
 			launchChatWindow();
@@ -68,13 +71,17 @@ public class MessageHandler {
 		this.currentConversations = currentConversations;
 	}
 
-	public String getMessage(String msg) {
+	public String splitter(String msg) {
 		String[] messageParts = msg.split(":");
 
 		System.out.println(msg);
-
-		setUsername(messageParts[0]);
-		setMessage(messageParts[1]);
+		
+		if(messageParts.length == 1) {
+			setUsername(messageParts[0]);
+		} else {
+			setUsername(messageParts[0]);
+			setMessage(messageParts[1]);
+		}
 		
 		return message;
 	}
