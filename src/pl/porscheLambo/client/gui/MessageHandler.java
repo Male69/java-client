@@ -25,10 +25,7 @@ public class MessageHandler {
 	private ChatGUI chat;
 	
 	public MessageHandler(String message) {
-		
-
-		
-		//System.out.println("Value of the checkIfConversationExists" + checkConv);
+	
 		if(message != null) {
 			splitter(message);
 			System.out.println("message:" + message + "username: " + username);

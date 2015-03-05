@@ -29,6 +29,8 @@ import javax.swing.JScrollPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ClientGui {
 
@@ -36,7 +38,10 @@ public class ClientGui {
 	private JTextField textField;
 	private JScrollPane scrollPane;
 	private JList<String> list;
-
+	private SocketClient socketClient;
+	private String username;
+	private Timer timerFriendList;
+	private Thread thread;
 	/**
 	 * Launch the application.
 	 */
@@ -66,6 +71,15 @@ public class ClientGui {
 	private void initialize() {
 		try {
 			frame = new JFrame();
+			frame.addWindowListener(new WindowAdapter() {
+				@SuppressWarnings("deprecation")
+				@Override
+				public void windowClosing(WindowEvent e) {
+					new SocketClientConnection().sendRequest(socketClient.getSocket(), username +  ":exit");
+					timerFriendList.stop();
+					thread.stop();
+				}
+			});
 			frame.setBounds(100, 100, 450, 300);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.getContentPane().setLayout(new CardLayout(0, 0));
@@ -96,15 +110,15 @@ public class ClientGui {
 			btnSubmit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					Login.setVisible(false);
-					
-					SocketClient socketClient = new SocketClient("localhost", 9991, textField.getText());
+					username = textField.getText();
+					socketClient = new SocketClient("localhost", 9992, username);
 					socketClient.connect();
-					socketClient.sendLogin(textField.getText());
+					socketClient.sendLogin(username);
 					SocketClientHandler socketClientHandler = new SocketClientHandler(socketClient.getSocket());
-					Thread thread = new Thread(socketClientHandler);
+					thread = new Thread(socketClientHandler);
 					thread.start();
 					
-					Timer timerFriendList = new Timer(5000, new FriendListListener());
+					timerFriendList = new Timer(5000, new FriendListListener());
 					timerFriendList.start();
 					list = new JList<String>(new FriendListListener().getListModel());
 					list.addMouseListener(new MouseAdapter() {

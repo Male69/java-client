@@ -46,7 +46,7 @@ public class SocketClientHandler implements Runnable {
 	public void run() {
 		while(true) {
 			message = getResponse();
-
+			log.info(message);
 			checkKindOfMsg(getFirstPartOfTheMsg(message));
 		}
 	}
@@ -67,14 +67,18 @@ public class SocketClientHandler implements Runnable {
 	}
 	
 	public String getFirstPartOfTheMsg(String msg) {
+		log.info(msg);
+		
 		String[] msgSplitter = msg.split(":");
-
+		
 		return msgSplitter[0];
 	}
 
 	public void checkKindOfMsg(String firstPartOfTheMsg) {
 		if(firstPartOfTheMsg.equals("connections")) {
 			new FriendListListener(message);
+		} else if(message.equals("Connection is closed")) {
+			log.info("Connection was closed succesfully");
 		} else {
 			new MessageHandler(message);
 		}
