@@ -72,12 +72,18 @@ public class ClientGui {
 		try {
 			frame = new JFrame();
 			frame.addWindowListener(new WindowAdapter() {
-				@SuppressWarnings("deprecation")
 				@Override
 				public void windowClosing(WindowEvent e) {
-					new SocketClientConnection().sendRequest(socketClient.getSocket(), username +  ":exit");
+					SocketClientConnection socketClientConnection = new SocketClientConnection();
+					socketClientConnection.sendRequest(socketClient.getSocket(), username +  ":exit");
+					//socketClientConnection.getResponse(socketClient.getSocket());
 					timerFriendList.stop();
-					thread.stop();
+					try {
+						thread.join(2000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					//thread.stop();
 				}
 			});
 			frame.setBounds(100, 100, 450, 300);

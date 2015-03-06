@@ -26,22 +26,23 @@ public class MessageHandler {
 	
 	public MessageHandler(String message) {
 	
-		if(message != null) {
-			splitter(message);
-			System.out.println("message:" + message + "username: " + username);
-		}
-		
+		if(!message.equals("remove")) {
+			if(message != null) {
+				splitter(message);
+				System.out.println("message:" + message + "username: " + username);
+			}
+			
 
-		if(checkIfConversationExists(username) == false || message.isEmpty()) {
-			System.out.println("Wchodze w warunek");
+			if(checkIfConversationExists(username) == false || message.isEmpty()) {
+				System.out.println("Wchodze w warunek");
 
-			launchChatWindow();
-			addConversation();
-		}else {
-			log.info("before addTextToWindow" + message);
-
-			currentConversations.get(username).addTextToWindow(this.message);
-		}
+				launchChatWindow();
+				addConversation();
+			}else {
+				log.info("before addTextToWindow" + message);
+				currentConversations.get(username).addTextToWindow(this.message);
+			}
+		} 	
 	}
 	
 	public String getMessage() {
@@ -101,15 +102,17 @@ public class MessageHandler {
 	}
 	
 	public void launchChatWindow() {
-		chat = new ChatGUI(username, SocketClientHandler.getSocket(), message);
-		
+		chat = new ChatGUI(username, SocketClientHandler.getSocket(), message);	
 		ChatGUI.main(chat);
 	}
 	
 	public void addConversation() { 
 		System.out.println("Size of the current conversations" + currentConversations.size());
-		
 		currentConversations.put(username, chat);
+	}
+	
+	public void removeConversation(String username) {
+		currentConversations.remove(username);
 	}
 }
 

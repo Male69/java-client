@@ -21,6 +21,7 @@ public class SocketClientHandler implements Runnable {
 	private String message;
 	private String username;
 	private static List<String> conversations;
+	private boolean stopThread;
 
 	public SocketClientHandler(Socket socket) {
 		SocketClientHandler.socket = socket;  
@@ -44,7 +45,8 @@ public class SocketClientHandler implements Runnable {
 	
 	@Override
 	public void run() {
-		while(true) {
+		stopThread = false;
+		while(stopThread == false) {
 			message = getResponse();
 			log.info(message);
 			checkKindOfMsg(getFirstPartOfTheMsg(message));
@@ -79,6 +81,7 @@ public class SocketClientHandler implements Runnable {
 			new FriendListListener(message);
 		} else if(message.equals("Connection is closed")) {
 			log.info("Connection was closed succesfully");
+			stopThread = true;
 		} else {
 			new MessageHandler(message);
 		}

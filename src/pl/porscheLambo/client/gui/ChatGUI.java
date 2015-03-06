@@ -19,10 +19,16 @@ import pl.porscheLambo.client.SocketClientHandler;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.net.Socket;
+import java.util.logging.Logger;
+
 import javax.swing.JLabel;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ChatGUI {
 
+	private final static Logger log = Logger.getLogger(ChatGUI.class.getName());
 	private JFrame frame;
 	private String username;
 	private Socket socket;
@@ -63,8 +69,15 @@ public class ChatGUI {
 	private void initialize() {
 		try {
 			frame = new JFrame();
+			frame.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					log.info("Zamknelo sie okienko");
+					new MessageHandler("remove").removeConversation(username);
+				}
+			});
 			frame.setBounds(100, 100, 450, 300);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
 			frame.getContentPane().setLayout(null);
 			
 			JPanel panel = new JPanel();
