@@ -2,11 +2,14 @@ package pl.porscheLambo.client.gui;
 
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import java.awt.CardLayout;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -20,7 +23,9 @@ import pl.porscheLambo.client.SocketClientHandler;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -31,6 +36,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.JMenuBar;
+import javax.swing.JPopupMenu;
+
+import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 public class ClientGui {
 
@@ -108,9 +119,39 @@ public class ClientGui {
 			frame.getContentPane().add(FriendList, "name_151306533339149");
 			FriendList.setLayout(null);
 			
-			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 11, 414, 239);
+			scrollPane = new JScrollPane(list);
+			scrollPane.setBounds(11, 11, 414, 239);
 			FriendList.add(scrollPane);
+			
+			DefaultListModel<String> listModel = new DefaultListModel<String>();
+			listModel.addElement("New");
+			listModel.addElement("Edit");
+			listModel.addElement("Open");
+			
+			JPopupMenu popupMenu = new JPopupMenu();
+			addPopup(scrollPane, popupMenu);
+			popupMenu.setBounds(0, 0, 200, 50);
+			
+			JList list_1 = new JList(listModel);
+			popupMenu.add(list_1);
+			//PopUpMenuFile.setVisible(false);
+			
+			JMenuBar menuBar = new JMenuBar();
+			scrollPane.setColumnHeaderView(menuBar);
+			
+			JButton btnFile = new JButton("File");
+			btnFile.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					popupMenu.show(btnFile, 0, 26);
+				}
+			});
+			menuBar.add(btnFile);
+			
+			JButton btnSetting = new JButton("Setting");
+			menuBar.add(btnSetting);
+			
+			JButton btnHelp = new JButton("Help");
+			menuBar.add(btnHelp);
 			
 			JButton btnSubmit = new JButton("Submit");
 			btnSubmit.addActionListener(new ActionListener() {
@@ -124,9 +165,12 @@ public class ClientGui {
 					thread = new Thread(socketClientHandler);
 					thread.start();
 					
-					timerFriendList = new Timer(5000, new FriendListListener());
+					timerFriendList = new Timer(1000, new FriendListListener());
 					timerFriendList.start();
-					list = new JList<String>(new FriendListListener().getListModel());
+					FriendListListener friendListListener = new FriendListListener();
+					list = new JList<String>(friendListListener.getListModel());
+					list.setCellRenderer(new FriendListRenderer());
+
 					list.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent evt) {
@@ -152,7 +196,38 @@ public class ClientGui {
 		}
 	}
 	
+	public class FriendListRenderer extends DefaultListCellRenderer  {
+
+		
+		public Component getListCellRendererComponent (
+				JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			  JLabel label = (JLabel) super.getListCellRendererComponent(
+	                    list, value, index, isSelected, cellHasFocus);
+	            label.setIcon(new ImageIcon("D:/Temp/Do chatu/unknownAvatar.jpg"));
+	            label.setHorizontalTextPosition(JLabel.RIGHT);
+			
+			return label;			
+		} 	
+	}
+	
 	public void launchChatGui() {
 		
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }
