@@ -1,7 +1,5 @@
 package pl.porscheLambo.client.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -10,7 +8,7 @@ import javax.swing.DefaultListModel;
 
 import pl.porscheLambo.client.SocketClientHandler;
 
-public class FriendListListener implements ActionListener {
+public class FriendListListener  {
 	
 	private final static Logger log = Logger.getLogger(FriendListListener.class.getName());
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
@@ -23,12 +21,6 @@ public class FriendListListener implements ActionListener {
 	
 	public FriendListListener() {
 
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		sendRequest();
-		System.out.println("Size of the list model" + listModel.getSize());
 	}
 
 	public List <String> getFriendList(String message) {

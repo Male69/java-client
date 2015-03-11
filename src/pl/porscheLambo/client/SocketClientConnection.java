@@ -14,7 +14,6 @@ public class SocketClientConnection {
 	private final static Logger log = Logger.getLogger(SocketClientConnection.class.getName()); 
 	private BufferedWriter writeMsg;
 	private BufferedReader serverMsg;
-	private List<String> connections;
 
 	
 	public void sendRequest(Socket socket, String in) {
@@ -47,4 +46,5 @@ public class SocketClientConnection {
 		}
 		return message;
 	}
+	
 }

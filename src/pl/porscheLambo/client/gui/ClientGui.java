@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -44,14 +45,14 @@ import java.awt.Component;
 import java.awt.image.BufferedImage;
 
 public class ClientGui {
-
+	
+	private final static Logger log = Logger.getLogger(ClientGui.class.getName());
 	private JFrame frame;
 	private JTextField textField;
 	private JScrollPane scrollPane;
 	private JList<String> list;
 	private SocketClient socketClient;
 	private String username;
-	private Timer timerFriendList;
 	private Thread thread;
 	/**
 	 * Launch the application.
@@ -86,15 +87,13 @@ public class ClientGui {
 				@Override
 				public void windowClosing(WindowEvent e) {
 					SocketClientConnection socketClientConnection = new SocketClientConnection();
-					socketClientConnection.sendRequest(socketClient.getSocket(), username +  ":exit");
-					//socketClientConnection.getResponse(socketClient.getSocket());
-					timerFriendList.stop();
 					try {
-						thread.join(2000);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
+						socketClientConnection.sendRequest(socketClient.getSocket(), username +  ":exit");
+							thread.join(2000);
+					} catch(NullPointerException | InterruptedException evt) {
+						log.info("Window is closed");
 					}
-					//thread.stop();
+					
 				}
 			});
 			frame.setBounds(100, 100, 450, 300);
@@ -132,9 +131,8 @@ public class ClientGui {
 			addPopup(scrollPane, popupMenu);
 			popupMenu.setBounds(0, 0, 200, 50);
 			
-			JList list_1 = new JList(listModel);
+			JList<String> list_1 = new JList<String>(listModel);
 			popupMenu.add(list_1);
-			//PopUpMenuFile.setVisible(false);
 			
 			JMenuBar menuBar = new JMenuBar();
 			scrollPane.setColumnHeaderView(menuBar);
@@ -164,9 +162,7 @@ public class ClientGui {
 					SocketClientHandler socketClientHandler = new SocketClientHandler(socketClient.getSocket());
 					thread = new Thread(socketClientHandler);
 					thread.start();
-					
-					timerFriendList = new Timer(1000, new FriendListListener());
-					timerFriendList.start();
+				
 					FriendListListener friendListListener = new FriendListListener();
 					list = new JList<String>(friendListListener.getListModel());
 					list.setCellRenderer(new FriendListRenderer());
@@ -199,8 +195,13 @@ public class ClientGui {
 	public class FriendListRenderer extends DefaultListCellRenderer  {
 
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public Component getListCellRendererComponent (
-				JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				JList<?>list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			  JLabel label = (JLabel) super.getListCellRendererComponent(
 	                    list, value, index, isSelected, cellHasFocus);
 	            label.setIcon(new ImageIcon("D:/Temp/Do chatu/unknownAvatar.jpg"));
